@@ -95,14 +95,14 @@ nav{display:flex;align-items:center;justify-content:space-between;gap:20px;paddi
 .btn.ghost:hover{background:rgba(15,61,46,.06)}
 
 /* mobile nav */
-.navtoggle{display:none;background:none;border:0;width:26px;height:20px;position:relative;cursor:pointer;padding:0}
-.navtoggle span{position:absolute;left:0;right:0;height:2px;background:var(--ink);border-radius:2px;transition:.25s}
-.navtoggle span:nth-child(1){top:0}
-.navtoggle span:nth-child(2){top:9px}
-.navtoggle span:nth-child(3){top:18px}
-.navtoggle.open span:nth-child(1){transform:translateY(9px) rotate(45deg)}
+.navtoggle{display:none;background:none;border:0;width:44px;height:44px;position:relative;cursor:pointer;padding:0}
+.navtoggle span{position:absolute;left:50%;transform:translateX(-50%);width:22px;height:2px;background:var(--ink);border-radius:2px;transition:.25s}
+.navtoggle span:nth-child(1){top:14px}
+.navtoggle span:nth-child(2){top:21px}
+.navtoggle span:nth-child(3){top:28px}
+.navtoggle.open span:nth-child(1){transform:translateX(-50%) translateY(7px) rotate(45deg)}
 .navtoggle.open span:nth-child(2){opacity:0}
-.navtoggle.open span:nth-child(3){transform:translateY(-9px) rotate(-45deg)}
+.navtoggle.open span:nth-child(3){transform:translateX(-50%) translateY(-7px) rotate(-45deg)}
 
 @media(max-width:860px){
   .navlinks{
@@ -244,6 +244,47 @@ footer a:hover{color:var(--amber-soft)}
 .crow span{font-size:14px;color:rgba(251,247,239,.7)}
 .map-wrap{margin-top:60px;border-radius:var(--radius);overflow:hidden;border:1px solid rgba(255,255,255,.14)}
 .map-wrap iframe{width:100%;height:340px;border:0;display:block;filter:grayscale(.15) contrast(1.05)}
+
+/* ==========================================================================
+   MOBILE / SMALL SCREEN REFINEMENTS
+   ========================================================================== */
+@media(max-width:640px){
+  .brand{font-size:15px;gap:9px}
+  .mark-img{width:28px}
+  .wrap{padding:0 18px}
+  nav{padding:12px 18px}
+  section{padding:56px 0}
+  .hero{padding:96px 0 56px}
+  .hero h1{max-width:100%;font-size:clamp(30px,8vw,44px)}
+  .hero .sub{font-size:17px}
+  .cta{flex-direction:column;align-items:stretch}
+  .cta .btn{justify-content:center;text-align:center}
+  .stats{grid-template-columns:1fr 1fr;margin-top:40px}
+  .stat{padding:18px 14px}
+  .stat b{font-size:21px}
+  .g2,.g3{grid-template-columns:1fr}
+  .cats{grid-template-columns:1fr 1fr;gap:8px}
+  .cat{padding:11px 12px;font-size:13.5px;text-align:center}
+  .steps{grid-template-columns:1fr 1fr;gap:22px 16px}
+  .tgrid{grid-template-columns:1fr}
+  .flow{gap:8px}
+  .flow span{padding:8px 13px;font-size:13px}
+  .quote{font-size:clamp(20px,6vw,28px)}
+  .faq summary{font-size:16px;gap:12px}
+  .faq summary .plus{width:22px;height:22px;font-size:14px}
+  .card{padding:22px 20px}
+  .pills{gap:8px}
+  .pill{padding:7px 13px;font-size:13px}
+  form{max-width:100%}
+  .map-wrap iframe{height:240px}
+  .icon-badge{width:40px;height:40px}
+  .why-badge{width:44px;height:44px}
+}
+@media(max-width:400px){
+  .stats{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr}
+  .cats{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
