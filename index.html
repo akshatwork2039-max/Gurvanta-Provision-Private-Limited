@@ -122,9 +122,9 @@ header.scrolled nav{padding:9px 24px}
 /* hero */
 .hero{padding:110px 0 90px;overflow:hidden;position:relative}
 .hero-video-bg{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:transparent}
-.hero-video-bg iframe{
+.hero-video-bg video{
   position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  width:177.78vh;height:56.25vw;min-width:100%;min-height:100%;border:0;
+  width:100%;height:100%;object-fit:cover;border:0;
 }
 .hero-video-overlay{
   position:absolute;inset:0;z-index:0;pointer-events:none;
@@ -427,7 +427,11 @@ footer a:hover{color:var(--amber-soft);opacity:.9}
 </header>
 
 <section class="hero">
-  <div class="hero-video-bg" id="heroVideoBg"></div>
+  <div class="hero-video-bg" id="heroVideoBg">
+    <video id="heroVideo" autoplay muted loop playsinline preload="auto" poster="">
+      <source src="hero-bg.mp4" type="video/mp4">
+    </video>
+  </div>
   <div class="hero-video-overlay"></div>
   <div class="glow-orb orb-1"></div>
   <div class="glow-orb orb-2"></div>
@@ -788,18 +792,14 @@ const isFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').ma
 /* ---------- hero background video (desktop only, respects data-saver & reduced motion) ---------- */
 (function () {
   const heroVideoBg = document.getElementById('heroVideoBg');
-  if (!heroVideoBg) return;
+  const heroVideo = document.getElementById('heroVideo');
+  if (!heroVideoBg || !heroVideo) return;
   const isWideEnough = window.innerWidth >= 860;
   const saveData = navigator.connection && navigator.connection.saveData;
   if (isWideEnough && !prefersReducedMotion && !saveData) {
-    const YT_ID = 'NiUsW-mWtmk';
-    const iframe = document.createElement('iframe');
-    iframe.src = `https://www.youtube.com/embed/${YT_ID}?autoplay=1&mute=1&loop=1&playlist=${YT_ID}&controls=0&showinfo=0&modestbranding=1&rel=0&iv_load_policy=3&disablekb=1&playsinline=1`;
-    iframe.title = 'Background video';
-    iframe.setAttribute('allow', 'autoplay; encrypted-media');
-    iframe.setAttribute('frameborder', '0');
-    iframe.setAttribute('aria-hidden', 'true');
-    heroVideoBg.appendChild(iframe);
+    heroVideo.play().catch(() => { /* autoplay blocked; video stays paused on first frame */ });
+  } else {
+    heroVideoBg.style.display = 'none';
   }
 })();
 
