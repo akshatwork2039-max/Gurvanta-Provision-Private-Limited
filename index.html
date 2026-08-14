@@ -121,6 +121,17 @@ header.scrolled nav{padding:9px 24px}
 
 /* hero */
 .hero{padding:110px 0 90px;overflow:hidden;position:relative}
+.hero-video-bg{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:transparent}
+.hero-video-bg iframe{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:177.78vh;height:56.25vw;min-width:100%;min-height:100%;border:0;
+}
+.hero-video-overlay{
+  position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    linear-gradient(180deg,rgba(5,8,16,.62) 0%,rgba(6,10,18,.72) 55%,var(--paper) 100%),
+    radial-gradient(900px 500px at 88% -10%,rgba(47,143,255,.14),transparent 60%);
+}
 .glow-orb{position:absolute;border-radius:50%;filter:blur(70px);pointer-events:none;z-index:0}
 .orb-1{width:420px;height:420px;background:var(--glow-green);top:-160px;right:-80px;animation:floatOrb 12s ease-in-out infinite}
 .orb-2{width:320px;height:320px;background:var(--glow-amber);bottom:-140px;left:-60px;animation:floatOrb 15s ease-in-out infinite reverse}
@@ -416,6 +427,8 @@ footer a:hover{color:var(--amber-soft);opacity:.9}
 </header>
 
 <section class="hero">
+  <div class="hero-video-bg" id="heroVideoBg"></div>
+  <div class="hero-video-overlay"></div>
   <div class="glow-orb orb-1"></div>
   <div class="glow-orb orb-2"></div>
   <div class="wrap">
@@ -771,6 +784,24 @@ footer a:hover{color:var(--amber-soft);opacity:.9}
 <script>
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const isFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+/* ---------- hero background video (desktop only, respects data-saver & reduced motion) ---------- */
+(function () {
+  const heroVideoBg = document.getElementById('heroVideoBg');
+  if (!heroVideoBg) return;
+  const isWideEnough = window.innerWidth >= 860;
+  const saveData = navigator.connection && navigator.connection.saveData;
+  if (isWideEnough && !prefersReducedMotion && !saveData) {
+    const YT_ID = 'gjZAThNHGwI';
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://www.youtube.com/embed/${YT_ID}?autoplay=1&mute=1&loop=1&playlist=${YT_ID}&controls=0&showinfo=0&modestbranding=1&rel=0&iv_load_policy=3&disablekb=1&playsinline=1`;
+    iframe.title = 'Background video';
+    iframe.setAttribute('allow', 'autoplay; encrypted-media');
+    iframe.setAttribute('frameborder', '0');
+    iframe.setAttribute('aria-hidden', 'true');
+    heroVideoBg.appendChild(iframe);
+  }
+})();
 
 /* ---------- scroll reveal ---------- */
 const io = new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
