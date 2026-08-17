@@ -13,6 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css">
 <style>
 :root{
   --ink:#F2F4F8; --ink-soft:#93A1B5; --paper:#0A0F1A; --paper-2:#111A2B; --paper-3:#050810;
@@ -348,6 +349,47 @@ footer a:hover{color:var(--amber-soft);opacity:.9}
 .map-wrap{margin-top:60px;border-radius:var(--radius);overflow:hidden;border:1px solid rgba(255,255,255,.14)}
 .map-wrap iframe{width:100%;height:340px;border:0;display:block;filter:grayscale(.15) contrast(1.05)}
 
+/* ---------- interactive global trade matrix ---------- */
+.trade-panel{
+  margin-top:52px;background:var(--paper-2);border:1px solid var(--line);border-radius:var(--radius);
+  padding:36px;
+}
+.trade-title{font-family:var(--heading);font-size:22px;font-weight:700;color:var(--ink);margin-top:6px}
+.trade-sub{font-size:14px;margin-top:8px;max-width:60ch}
+.trade-countries{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.trade-country{
+  display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;
+  border:1px solid var(--line);background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:13.5px;font-weight:600;cursor:pointer;
+  transition:transform .2s ease,background-color .2s ease,border-color .2s ease,box-shadow .2s ease;
+}
+.trade-country:hover{transform:translateY(-2px);border-color:rgba(47,143,255,.5);box-shadow:0 8px 20px -10px var(--glow-green)}
+.trade-country.active{background:var(--amber);color:#12231b;border-color:var(--amber)}
+.trade-country .flag-ic{width:20px;height:15px;border-radius:2px;flex-shrink:0;background-size:cover}
+.trade-detail{
+  margin-top:32px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+  padding:32px;display:grid;grid-template-columns:1fr 1fr 1.3fr 1.2fr;gap:28px;
+}
+.trade-col .t-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:12px}
+.trade-col .t-name{display:flex;align-items:center;gap:10px;font-family:var(--heading);font-size:19px;font-weight:700;color:var(--ink)}
+.trade-col .t-name .flag-ic{width:30px;height:22px;border-radius:3px;flex-shrink:0;background-size:cover}
+.trade-col .t-region{color:var(--ink-soft);font-size:13px;margin-top:6px}
+.trade-col .t-stars{margin-top:10px;color:var(--amber);font-size:13px;letter-spacing:2px}
+.trade-col .t-stars .dim{color:var(--line)}
+.trade-col .t-port{font-weight:600;color:var(--ink);font-size:15px}
+.trade-col .t-transit{color:var(--ink-soft);font-size:13px;margin-top:8px;display:flex;align-items:center;gap:6px}
+.trade-commodities{display:flex;flex-wrap:wrap;gap:8px}
+.trade-commodities span{background:var(--paper-2);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:12px;color:var(--ink)}
+.trade-quote{font-style:italic;color:var(--ink-soft);font-size:13.5px;line-height:1.65}
+@media(max-width:860px){
+  .trade-detail{grid-template-columns:1fr 1fr;row-gap:24px}
+}
+@media(max-width:640px){
+  .trade-panel{padding:22px}
+  .trade-detail{grid-template-columns:1fr;padding:24px;gap:22px}
+  .trade-country{padding:8px 13px;font-size:12.5px}
+}
+
 /* ==========================================================================
    MOBILE / SMALL SCREEN REFINEMENTS
    ========================================================================== */
@@ -453,16 +495,24 @@ footer a:hover{color:var(--amber-soft);opacity:.9}
 </section>
 
 <section id="about" class="reveal">
-  <div class="wrap grid g2">
-    <div>
-      <div class="eyebrow">About Us</div>
-      <h2 style="font-size:clamp(28px,4vw,42px)">An efficient bridge between manufacturers and the Indian market</h2>
+  <div class="wrap">
+    <div class="grid g2">
+      <div>
+        <div class="eyebrow">About Us</div>
+        <h2 style="font-size:clamp(28px,4vw,42px)">An efficient bridge between manufacturers and the Indian market</h2>
+      </div>
+      <div>
+        <p class="lead">Gurvanta Provision Private Limited operates with a clear focus on making quality food and beverage products accessible across multiple markets and customer segments through a professionally managed distribution ecosystem.</p>
+        <p class="lead">We develop relationships with manufacturers, brands, distributors, dealers, retailers, modern trade partners, institutional buyers and other relevant channels within the Food &amp; Beverage sector.</p>
+      </div>
     </div>
-    <div>
-      <p class="lead">Gurvanta Provision Private Limited operates with a clear focus on making quality food and beverage products accessible across multiple markets and customer segments through a professionally managed distribution ecosystem.</p>
-      <p class="lead">We develop relationships with manufacturers, brands, distributors, dealers, retailers, modern trade partners, institutional buyers and other relevant channels within the Food &amp; Beverage sector.</p>
-      <div class="pills">
-        <span class="pill">Pan India</span><span class="pill">Qatar</span><span class="pill">UAE</span><span class="pill">Sri Lanka</span><span class="pill">Canada</span><span class="pill">USA</span><span class="pill">&amp; More</span>      </div>
+
+    <div class="trade-panel">
+      <div class="eyebrow">Global Reach</div>
+      <h3 class="trade-title">Interactive Global Trade Matrix</h3>
+      <p class="lead trade-sub">Click any trade hub to inspect transit times and demanded commodities.</p>
+      <div class="trade-countries" id="tradeCountries"></div>
+      <div class="trade-detail" id="tradeDetail"></div>
     </div>
   </div>
 </section>
@@ -789,15 +839,18 @@ footer a:hover{color:var(--amber-soft);opacity:.9}
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const isFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-/* ---------- hero background video (desktop only, respects data-saver & reduced motion) ---------- */
+/* ---------- hero background video (all devices, respects data-saver & reduced motion) ---------- */
 (function () {
   const heroVideoBg = document.getElementById('heroVideoBg');
   const heroVideo = document.getElementById('heroVideo');
   if (!heroVideoBg || !heroVideo) return;
-  const isWideEnough = window.innerWidth >= 860;
   const saveData = navigator.connection && navigator.connection.saveData;
-  if (isWideEnough && !prefersReducedMotion && !saveData) {
-    heroVideo.play().catch(() => { /* autoplay blocked; video stays paused on first frame */ });
+  if (!prefersReducedMotion && !saveData) {
+    const tryPlay = () => heroVideo.play().catch(() => {});
+    tryPlay();
+    // iOS/Safari sometimes need a second nudge once metadata loads
+    heroVideo.addEventListener('loadedmetadata', tryPlay, { once: true });
+    document.addEventListener('touchstart', tryPlay, { once: true, passive: true });
   } else {
     heroVideoBg.style.display = 'none';
   }
@@ -855,6 +908,111 @@ navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
   navToggle.classList.remove('open');
   navToggle.setAttribute('aria-expanded', false);
 }));
+
+/* ---------- interactive global trade matrix ---------- */
+(function () {
+  const wrap = document.getElementById('tradeCountries');
+  const detail = document.getElementById('tradeDetail');
+  if (!wrap || !detail) return;
+
+  const data = [
+    { id:'sa', flag:'🇸🇦', name:'Saudi Arabia', region:'Middle East', stars:5, port:'Jeddah Islamic Port / Dammam', transit:'5 – 8 Days',
+      commodities:['Basmati Rice','Spices & Masala','Tea','Snacks & Namkeen'],
+      driver:'High consumption during Ramadan, bakery, hotels and retail. Limited domestic production.' },
+    { id:'ae', flag:'🇦🇪', name:'United Arab Emirates', region:'Middle East', stars:5, port:'Jebel Ali Port, Dubai', transit:'4 – 6 Days',
+      commodities:['Basmati Rice','Spices','Dairy-based Sweets','Snacks'],
+      driver:'Large Indian expatriate base drives steady retail and wholesale demand.' },
+    { id:'qa', flag:'🇶🇦', name:'Qatar', region:'Middle East', stars:4, port:'Hamad Port, Doha', transit:'6 – 9 Days',
+      commodities:['Rice','Spices','Tea','Namkeen'],
+      driver:'Growing modern-trade retail sector and Indian community demand.' },
+    { id:'kw', flag:'🇰🇼', name:'Kuwait', region:'Middle East', stars:4, port:'Shuwaikh Port', transit:'6 – 9 Days',
+      commodities:['Rice','Spices','Pulses','Snacks'],
+      driver:'Steady demand from South Asian expatriate population.' },
+    { id:'bh', flag:'🇧🇭', name:'Bahrain', region:'Middle East', stars:3, port:'Khalifa Bin Salman Port', transit:'6 – 9 Days',
+      commodities:['Rice','Spices','Tea','Confectionery'],
+      driver:'Retail and hospitality sector growth.' },
+    { id:'om', flag:'🇴🇲', name:'Oman', region:'Middle East', stars:4, port:'Port of Sohar', transit:'6 – 9 Days',
+      commodities:['Rice','Spices','Dry Fruits','Snacks'],
+      driver:'Strong trade ties and expatriate community demand.' },
+    { id:'my', flag:'🇲🇾', name:'Malaysia', region:'Southeast Asia', stars:4, port:'Port Klang', transit:'10 – 14 Days',
+      commodities:['Spices','Tea','Snacks','Ready-to-Eat'],
+      driver:'Culturally aligned taste profile and growing modern trade.' },
+    { id:'sg', flag:'🇸🇬', name:'Singapore', region:'Southeast Asia', stars:4, port:'PSA Singapore', transit:'10 – 14 Days',
+      commodities:['Premium Spices','Tea','Snacks','Specialty Foods'],
+      driver:'Regional re-export hub with strong premium F&B retail.' },
+    { id:'jp', flag:'🇯🇵', name:'Japan', region:'East Asia', stars:3, port:'Port of Yokohama', transit:'16 – 20 Days',
+      commodities:['Specialty Spices','Tea','Health Foods'],
+      driver:'Rising interest in ethnic and health-focused foods.' },
+    { id:'kr', flag:'🇰🇷', name:'South Korea', region:'East Asia', stars:3, port:'Port of Busan', transit:'16 – 20 Days',
+      commodities:['Spices','Instant Foods','Snacks'],
+      driver:'Growing curiosity for Indian and Asian fusion foods.' },
+    { id:'de', flag:'🇩🇪', name:'Germany', region:'Europe', stars:3, port:'Port of Hamburg', transit:'18 – 24 Days',
+      commodities:['Spices','Tea','Organic & Specialty Foods'],
+      driver:'Strong demand for organic and ethnic specialty products.' },
+    { id:'gb', flag:'🇬🇧', name:'United Kingdom', region:'Europe', stars:5, port:'Port of Felixstowe', transit:'18 – 24 Days',
+      commodities:['Spices','Tea','Snacks','Ready-to-Eat'],
+      driver:'Large South Asian diaspora sustains year-round demand.' },
+    { id:'nl', flag:'🇳🇱', name:'Netherlands', region:'Europe', stars:3, port:'Port of Rotterdam', transit:'18 – 24 Days',
+      commodities:['Spices','Tea','Specialty Foods'],
+      driver:'Major European distribution and re-export hub.' },
+    { id:'ca', flag:'🇨🇦', name:'Canada', region:'North America', stars:5, port:'Port of Vancouver', transit:'20 – 26 Days',
+      commodities:['Rice','Spices','Snacks','Ready-to-Eat'],
+      driver:'Large and growing Indian diaspora across major cities.' },
+    { id:'us', flag:'🇺🇸', name:'United States', region:'North America', stars:5, port:'Port of Los Angeles / Long Beach', transit:'20 – 26 Days',
+      commodities:['Rice','Spices','Snacks','Frozen Foods'],
+      driver:'Largest overseas Indian diaspora with strong retail demand.' },
+    { id:'vn', flag:'🇻🇳', name:'Vietnam', region:'Southeast Asia', stars:3, port:'Port of Ho Chi Minh (Cat Lai)', transit:'10 – 14 Days',
+      commodities:['Spices','Pulses','Tea'],
+      driver:'Emerging market with rising import demand.' },
+    { id:'au', flag:'🇦🇺', name:'Australia', region:'Oceania', stars:4, port:'Port of Sydney', transit:'16 – 22 Days',
+      commodities:['Rice','Spices','Snacks','Ready-to-Eat'],
+      driver:'Sizeable Indian community and expanding retail presence.' }
+  ];
+
+  function stars(n) {
+    let out = '';
+    for (let i = 0; i < 5; i++) out += i < n ? '★' : '<span class="dim">★</span>';
+    return out;
+  }
+
+  function render(c) {
+    detail.innerHTML = `
+      <div class="trade-col">
+        <div class="t-label">Destination Country</div>
+        <div class="t-name"><span class="fi fi-${c.id} flag-ic"></span>${c.name}</div>
+        <div class="t-region">Region: ${c.region}</div>
+        <div class="t-stars">Demand: ${stars(c.stars)}</div>
+      </div>
+      <div class="trade-col">
+        <div class="t-label">Primary Discharge Port</div>
+        <div class="t-port">${c.port}</div>
+        <div class="t-transit">⏱ Transit Time: ${c.transit}</div>
+      </div>
+      <div class="trade-col">
+        <div class="t-label">Top Demanded Commodities</div>
+        <div class="trade-commodities">${c.commodities.map(x => `<span>${x}</span>`).join('')}</div>
+      </div>
+      <div class="trade-col">
+        <div class="t-label">Market Demand Driver</div>
+        <p class="trade-quote">"${c.driver}"</p>
+      </div>
+    `;
+  }
+
+  wrap.innerHTML = data.map((c, i) =>
+    `<button class="trade-country${i === 0 ? ' active' : ''}" data-id="${c.id}"><span class="fi fi-${c.id} flag-ic"></span>${c.name}</button>`
+  ).join('');
+
+  wrap.querySelectorAll('.trade-country').forEach(btn => {
+    btn.addEventListener('click', () => {
+      wrap.querySelectorAll('.trade-country').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      render(data.find(c => c.id === btn.dataset.id));
+    });
+  });
+
+  render(data[0]);
+})();
 
 /* ---------- active nav indicator ---------- */
 const sections = ['about','business','categories','value','network','brands','contact']
